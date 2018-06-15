@@ -39,7 +39,7 @@ class Component6 extends Component {
                     :
                     <FlatList style={styles.container}
                         data = { albums}
-                              renderItem={({item}) => <Text>{item.title}</Text>}
+                        renderItem={({item}) => <Text>{item.title}</Text>}
                     />
                 }
             </View>

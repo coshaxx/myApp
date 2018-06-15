@@ -17,7 +17,7 @@ export default class MyApp {
 
         registerScreens(store, Provider);
 
-        MyApp.startApp('my.Component5', 'Welcome')
+        MyApp.startApp('screen.films', 'Welcome')
     }
 
     static startApp(screen, title, params) {
