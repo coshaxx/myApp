@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import { styles} from "./Component5.styles";
 import * as userActions from '../Users/users.actions'
-import { Text, View, ListView, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, ListView, TouchableHighlight, ActivityIndicator } from 'react-native';
 
 class Component5 extends Component {
     constructor() {
@@ -20,8 +20,6 @@ class Component5 extends Component {
 
 
     onPress(user) {
-        console.log('USER:', user);
-
         this.props.navigator.push({
             screen: 'my.Component6',
             title: 'Detail page',
@@ -42,38 +40,32 @@ class Component5 extends Component {
         )
     }
 
+
     render() {
         console.log("USERS:", this.props.users);
-        const { users } = this.props;
+        const {users} = this.props;
         return (
+            this.props.needLoader ?
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#00ffaa"/>
+            </View>
+                :
             <View>
                 <Text>Users:</Text>
                 <ListView
-                    dataSource = {this.state.userDataSource.cloneWithRows(users)}
-                    renderRow = { this.renderRow.bind(this)}
+                    dataSource={this.state.userDataSource.cloneWithRows(users)}
+                    renderRow={this.renderRow.bind(this)}
                 />
             </View>
+
         )
     }
 }
 
-const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 10,
-        backgroundColor: '#f4f4f4',
-        marginBottom: 3
-    },
-    rowText: {
-        flex: 1
-    }
-});
-
 function mapStateToProps(state, ownProps) {
     return {
         users: state.users.data,
-        loading: state.users.loading
+        needLoader: state.users.loading
     }
 }
 

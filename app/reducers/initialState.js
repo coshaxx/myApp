@@ -1,9 +1,16 @@
 export default {
 	users: {
-        loading: false,
+        loading: true,
 		data: [],
         error:{
             message:''
         }
     },
+    albums:{
+	    loading: true,
+        data:[],
+        error:{
+	        message:''
+        }
+    }
 };

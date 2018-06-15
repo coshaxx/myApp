@@ -15,14 +15,15 @@ export function fetchUsersError() {
 }
 export function fetchUsers() {
     return function (dispatch) {
-        return axios.get('https://jsonplaceholder.typicode.com/users')
+        return setTimeout(() => (axios.get('https://jsonplaceholder.typicode.com/users')
             .then(response => {
                 dispatch(fetchUsersSuccess(response))
             })
             .catch(error => {
-                dispatch(fetchUsersError())
-                console.log(error); //eslint-disable-line
-            })
+                dispatch(fetchUsersError());
+                console.log(error);
+            })), 500)
 
     }
 }
+
