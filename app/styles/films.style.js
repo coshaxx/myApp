@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Platform } from 'react-native'
-
+import colors from './common.style'
 export const { width, height } = Dimensions.get('window');
 
 
@@ -12,25 +12,21 @@ export const ITEM_HEIGHT = (Dimensions.get('window').height/3) - ITEM_OFFSET * 3
 export const ITEM_WIDTH = (Dimensions.get('window').width/numColumns) - ITEM_OFFSET * numColumns;
 export const IMAGE_HEIGHT = 125;
 
-const colors = {
-    snow: 'white',
-    darkPurple: '#140034',
-    placeholder: '#eee',
-};
 
-export const styles = {
+
+export const styles = StyleSheet.create({
     container:{
       flex:1,
       alignItems: 'center',
         flexWrap: 'wrap',
-        backgroundColor: '#eee'
+        backgroundColor: colors.backgroundColor
     },
     imageWrap:{
         margin:PRODUCT_ITEM_MARGIN,
-        padding:ITEM_OFFSET,
+        // padding:ITEM_OFFSET,
         height: ITEM_HEIGHT,
         width: ITEM_WIDTH,
-        backgroundColor:'#fff'
+        backgroundColor: colors.grey,
     },
     image:{
         width: ITEM_WIDTH,
@@ -38,4 +34,26 @@ export const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
-}
+    imageFooterContainer:{
+        flex:1,
+        padding:5
+    },
+    footerText:{
+        fontSize: 10,
+        color: colors.textColor
+    },
+    footerTitle:{
+        fontSize: 12,
+        flex:1
+    },
+    footerData:{
+      fontSize:12,
+        marginRight:10
+    },
+    footerRatingBlock:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent: 'flex-start',
+        alignItems:'center'
+    }
+})

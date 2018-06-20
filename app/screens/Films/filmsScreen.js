@@ -5,7 +5,8 @@ import * as filmsAction from './films.actions'
 import * as imageSizes from '../../constants/imageSizes'
 import { ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles } from "../../styles/films.style";
 import { Text, View, Image, ActivityIndicator, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { getImageUrl} from "../../modules/_imageHelper";
+import { getImageUrl } from "../../modules/_imageHelper";
+import Loader from "../../components/Loader/loader"
 
 class FilmsGrid extends Component {
     constructor() {
@@ -17,30 +18,37 @@ class FilmsGrid extends Component {
     }
 
 
-    onPress(user) {
-        // this.props.navigator.push({
-        //     screen: 'my.Component6',
-        //     title: 'Detail page',
-        //     passProps: {
-        //         user: user
-        //     }
-        // });
+    onPress(film) {
+        this.props.navigator.push({
+            screen: 'screen.poster',
+            title: 'Detail page',
+            passProps: {
+                film: film
+            }
+        });
     }
 
-
-    _renderItem = ({item}) =>{
+    _renderItem = ({item}) => {
         const imageUrl = getImageUrl(item.poster_path, imageSizes.IMAGE_SIZE_350_196);
-
-        return <TouchableWithoutFeedback key={item.id} onPress={() => console.log("PRESS on val", item.id)}>
-        <View style={styles.imageWrap}>
-            <Image source={{uri:imageUrl}}  style={styles.image}/>
-            <Text >{item.title}</Text>
-        </View>
+        return <TouchableWithoutFeedback key={item.id} onPress={() => this.onPress(item)}>
+            <View style={styles.imageWrap}>
+                <Image source={{uri: imageUrl}} style={styles.image}/>
+                <View style={styles.imageFooterContainer}>
+                    <Text style={[styles.footerText, styles.footerTitle]}>{item.title}</Text>
+                    <View style={styles.footerRatingBlock}>
+                        <Text style={[styles.footerText, styles.footerData]}>{item.release_date}</Text>
+                        <Text style={styles.footerText}>Rating:    {item.vote_average}</Text>
+                    </View>
+                </View>
+            </View>
         </TouchableWithoutFeedback>
     }
 
     _loadMore = () => {
-        this.props.actions.fetchPopularFilms(this.props.currentPage + 1)
+        if (!this.props.needLoader) {
+            this.props.actions.startFetchFilms();
+            this.props.actions.fetchPopularFilms(this.props.currentPage + 1)
+        }
     }
 
     _keyExtractor = (item, index) => item.id;
@@ -53,6 +61,7 @@ class FilmsGrid extends Component {
             index,
         };
     };
+
     render() {
         const {films, needLoader, error} = this.props;
         console.log("STYLES:", styles);
@@ -62,23 +71,23 @@ class FilmsGrid extends Component {
                     <Text> Error:</Text>
                     <Text> {error.message}</Text>
                 </View> :
-                needLoader ?
-                    <View>
-                        <ActivityIndicator size="large" color="#00ffaa"/>
-                    </View>
-                    :
-                    <View>
-                        <FlatList
-                            data={films}
-                            renderItem={this._renderItem}
-                            onEndReached={this._loadMore}
-                            contentcontaierStyle={styles.container}
-                             numColumns={numColumns}
-                            keyExtractor={this._keyExtractor}
-                            getItemLayout={this._getItemLayout}
-                        />
-                        <Text> Hello wold!2 </Text>
-                    </View>
+                <View style={styles.container}>
+                    {needLoader && films.length === 0 ?
+                        <Loader horyzontal/>
+                        :
+                        <View>
+                            <FlatList
+                                data={films}
+                                renderItem={this._renderItem}
+                                onEndReached={this._loadMore}
+                                contentcontaierStyle={styles.container}
+                                numColumns={numColumns}
+                                keyExtractor={this._keyExtractor}
+                                getItemLayout={this._getItemLayout}
+                            />
+                        </View>
+                    }
+                </View>
 
         )
     }

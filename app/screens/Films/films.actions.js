@@ -23,18 +23,16 @@ export function fetchPopularFilms(page = 1) {
     console.log("PAGE:", page);
     const api = clientApi();
     return function (dispatch) {
-        return setTimeout(() => (
-            api.getPopularFilms(page)
+        return api.getPopularFilms(page)
                 .then(response => {
-                    console.log("RESPONSE:", response.data);
+                    console.log("RESPONSE SUCCESS");
                     dispatch(fetchFilmsSuccess(response.data))
                 })
                 .catch(error => {
                     console.log(error);
                     dispatch(fetchFilmsError(error.message));
 
-                })
-        ), 0)
+                });
 
     }
 }
