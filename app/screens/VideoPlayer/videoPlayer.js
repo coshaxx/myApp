@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 
 import Video from 'react-native-video';
-
+const  TVEventHandler = require('TVEventHandler');
 export default class VideoPlayer extends Component {
+    _tvEventHandler: any;
 
     state = {
         rate: 1,
@@ -25,6 +26,35 @@ export default class VideoPlayer extends Component {
     };
 
     video: Video;
+
+    componentDidMount() {
+        this._enableTVEventHandler();
+    }
+
+    componentWillUnmount() {
+        this._disableTVEventHandler();
+    }
+
+    _enableTVEventHandler() {
+        const $this = this;
+        this._tvEventHandler = new TVEventHandler();
+        this._tvEventHandler.enable(this, function(cmp, evt) {
+
+          if(evt && evt.eventType === 'playPause') {
+                $this.playPause();
+            }
+        });
+    }
+    _disableTVEventHandler() {
+        if (this._tvEventHandler) {
+            this._tvEventHandler.disable();
+            delete this._tvEventHandler;
+        }
+    }
+
+    playPause = () => {
+        this.setState({ paused: !this.state.paused })
+    };
 
     onLoad = (data) => {
         this.setState({ duration: data.duration });

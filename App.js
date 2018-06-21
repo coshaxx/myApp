@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
-import { Navigation } from 'react-native-navigation';
-import { Provider } from 'react-redux';
-import { registerScreens } from "./screens";
+import { Provider, connect } from 'react-redux';
+
 import configureStore from './app/store/configureStore'
+import {reduxifyNavigator} from "react-navigation-redux-helpers";
+import {AppNavigator} from "./app/reducers/rootReducer";
 
 const store = configureStore();
-export default class MyApp {
-    constructor() {
+console.log('-------------------------222---------------------------')
+const App = reduxifyNavigator(AppNavigator, "root");
+const mapStateToProps = (state) => ({
+    state: state.nav,
+});
+const AppWithNavigationState = connect(mapStateToProps)(App);
 
-        registerScreens(store, Provider);
-
-        MyApp.startApp('screen.films', 'Welcome')
+export default class MyApp extends React.Component{
+    render() {
+        return (
+            <Provider store={store}>
+                <AppWithNavigationState />
+            </Provider>
+        );
     }
 
-    static startApp(screen, title, params) {
-        Navigation.startSingleScreenApp({
-            screen: {
-                screen: screen,
-                label: title,
-            },
-            passProps: {},
-            appStyle: {
-                orientation: 'landscape',
-                keepStyleAcrossPush: true
-            }
-        });
-    }
 
 }
 

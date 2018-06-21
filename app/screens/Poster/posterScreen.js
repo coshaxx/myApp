@@ -5,7 +5,7 @@ import { getImageUrl } from "../../modules/_imageHelper";
 import { styles } from "../../styles/poster.style";
 import Loader from "../../components/Loader/loader"
 import clientApi from '../../modules/_clientApi'
-
+const  TVEventHandler = require('TVEventHandler');
 export default class Poster extends Component {
     constructor() {
         super();
@@ -13,15 +13,45 @@ export default class Poster extends Component {
             needLoader: false,
             poster: {},
         }
+
     }
 
     componentDidMount() {
         this._fetchPosterData();
+        this._enableTVEventHandler();
+    }
+
+    componentWillUnmount() {
+        this._disableTVEventHandler();
+    }
+
+    _enableTVEventHandler() {
+        const $this = this;
+        this._tvEventHandler = new TVEventHandler();
+        this._tvEventHandler.enable(this, function(cmp, evt) {
+            console.log('EVENT TYPE:', evt.eventType)
+            if(evt){
+                switch (evt.eventType){
+                    case 'playPause':$this._onPress();break;
+                    case 'menu': $this.props.navigation.goBack();break;
+                }
+            }
+
+        });
+    }
+    _disableTVEventHandler() {
+        if (this._tvEventHandler) {
+            this._tvEventHandler.disable();
+            delete this._tvEventHandler;
+        }
     }
 
     _fetchPosterData() {
+        const { navigation } = this.props;
+        const film = navigation.getParam('film', 'NO-ID');
+
         const api = clientApi();
-        api.getPosterData(this.props.film.id)
+        api.getPosterData(film.id)
             .then(response => {
                 this.setState({
                     needLoader: false,
@@ -34,22 +64,19 @@ export default class Poster extends Component {
     }
 
     _onPress = () => {
-        this.props.navigator.push({
-            screen: 'screen.videoPlayer',
-            title: 'Detail page',
-            passProps: {
+        this.props.navigation.navigate('Video',{
                 video: this.state.poster.id
-            }
         });
         console.log("Press Play Video:", this.state.poster.id);
     }
 
     render() {
-        const {film} = this.props;
+
+        const { navigation } = this.props;
+        const film = navigation.getParam('film', 'NO-ID');
         const {poster} = this.state;
         const imageUrl = getImageUrl(film.poster_path, imageSizes.IMAGE_SIZE_370_556);
-        console.log("this.props.film:", this.props.film);
-        console.log("POSTER:", this.state);
+
         return (
             <View style={styles.container}>
                 <View style={styles.leftView}>

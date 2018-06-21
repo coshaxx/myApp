@@ -4,14 +4,25 @@ import { connect } from 'react-redux';
 import * as filmsAction from './films.actions'
 import * as imageSizes from '../../constants/imageSizes'
 import { ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles } from "../../styles/films.style";
-import { Text, View, Image, ActivityIndicator, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
 import { getImageUrl } from "../../modules/_imageHelper";
 import Loader from "../../components/Loader/loader"
-
+import colors from '../../styles/common.style'
 class FilmsGrid extends Component {
     constructor() {
         super();
     }
+
+    static navigationOptions = {
+        title: 'Films',
+        headerStyle: {
+            backgroundColor: colors.grey,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+    };
 
     componentDidMount() {
         this.props.actions.fetchPopularFilms();
@@ -19,18 +30,14 @@ class FilmsGrid extends Component {
 
 
     onPress(film) {
-        this.props.navigator.push({
-            screen: 'screen.poster',
-            title: 'Detail page',
-            passProps: {
-                film: film
-            }
+        this.props.navigation.navigate('FilmPoster', {
+            film: film,
         });
     }
 
     _renderItem = ({item}) => {
         const imageUrl = getImageUrl(item.poster_path, imageSizes.IMAGE_SIZE_350_196);
-        return <TouchableWithoutFeedback key={item.id} onPress={() => this.onPress(item)}>
+        return <TouchableHighlight key={item.id} onPress={() => this.onPress(item)} underlayColor={colors.focusColor}>
             <View style={styles.imageWrap}>
                 <Image source={{uri: imageUrl}} style={styles.image}/>
                 <View style={styles.imageFooterContainer}>
@@ -41,7 +48,7 @@ class FilmsGrid extends Component {
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableHighlight>
     }
 
     _loadMore = () => {

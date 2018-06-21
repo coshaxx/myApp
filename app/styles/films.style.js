@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet, Platform } from 'react-native'
 import colors from './common.style'
+import appleOrAndroid from '../modules/_OsHelper';
 export const { width, height } = Dimensions.get('window');
-
 
 export const numColumns = 4;
 
@@ -10,8 +10,7 @@ export const PRODUCT_ITEM_MARGIN = ITEM_OFFSET * 2;
 
 export const ITEM_HEIGHT = (Dimensions.get('window').height/3) - ITEM_OFFSET * 3;
 export const ITEM_WIDTH = (Dimensions.get('window').width/numColumns) - ITEM_OFFSET * numColumns;
-export const IMAGE_HEIGHT = 125;
-
+export const IMAGE_HEIGHT = appleOrAndroid(250,125);
 
 
 export const styles = StyleSheet.create({
@@ -23,7 +22,6 @@ export const styles = StyleSheet.create({
     },
     imageWrap:{
         margin:PRODUCT_ITEM_MARGIN,
-        // padding:ITEM_OFFSET,
         height: ITEM_HEIGHT,
         width: ITEM_WIDTH,
         backgroundColor: colors.grey,
@@ -39,16 +37,16 @@ export const styles = StyleSheet.create({
         padding:5
     },
     footerText:{
-        fontSize: 10,
+        fontSize: appleOrAndroid(28,10),
         color: colors.textColor
     },
     footerTitle:{
-        fontSize: 12,
+        fontSize: appleOrAndroid(32,12),
         flex:1
     },
     footerData:{
-      fontSize:12,
-        marginRight:10
+      fontSize:appleOrAndroid(28,12),
+        marginRight:appleOrAndroid(20,10)
     },
     footerRatingBlock:{
         flex:1,
