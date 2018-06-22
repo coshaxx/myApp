@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, TouchableOpacity} from 'react-native';
+import { Text, View, Image, Button } from 'react-native';
 import * as imageSizes from "../../constants/imageSizes";
 import { getImageUrl } from "../../modules/_imageHelper";
 import { styles } from "../../styles/poster.style";
 import Loader from "../../components/Loader/loader"
 import clientApi from '../../modules/_clientApi'
+
 const  TVEventHandler = require('TVEventHandler');
+
 export default class Poster extends Component {
+
     constructor() {
         super();
         this.state = {
@@ -14,6 +17,10 @@ export default class Poster extends Component {
             poster: {},
         }
 
+    }
+
+    static navigationOptions = {
+        header: null
     }
 
     componentDidMount() {
@@ -39,6 +46,7 @@ export default class Poster extends Component {
 
         });
     }
+
     _disableTVEventHandler() {
         if (this._tvEventHandler) {
             this._tvEventHandler.disable();
@@ -65,9 +73,9 @@ export default class Poster extends Component {
 
     _onPress = () => {
         this.props.navigation.navigate('Video',{
-                video: this.state.poster.id
+                video: this.state.poster.id,
+                headerMode: 'screen'
         });
-        console.log("Press Play Video:", this.state.poster.id);
     }
 
     render() {
@@ -100,6 +108,8 @@ export default class Poster extends Component {
                                         <Button
                                             onPress={this._onPress}
                                             title={"Play Video"}
+                                            hasTVPreferredFocus ={true}
+                                            color={'#fff'}
                                         />
                                     </View>
                                 </View>

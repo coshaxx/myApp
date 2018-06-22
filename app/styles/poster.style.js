@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import colors from './common.style'
+import appleOrAndroid from '../modules/_OsHelper';
 export const styles = StyleSheet.create({
     container:{
       flex:1,
@@ -15,32 +16,36 @@ export const styles = StyleSheet.create({
         paddingTop: 20,
     },
     posterImage:{
-        width: 250,
-        height: 400,
+        width: appleOrAndroid(500,250),
+        height: appleOrAndroid(800,400),
     },
     rightView:{
         flex: 2,
         marginLeft:10,
         padding:5,
         justifyContent: 'flex-start',
-        paddingTop: 20,
+        paddingTop: appleOrAndroid(40,20),
     },
     detailInformationContainer:{
         flex:1,
         justifyContent: 'flex-start'
     },
     posterOverView:{
-        marginBottom:20,
-        marginTop:20,
+        marginBottom:appleOrAndroid(40,20),
+        marginTop:appleOrAndroid(40,20),
     },
     text:{
         color: colors.textColor
     },
     title:{
-        fontSize: 18,
+        fontSize: appleOrAndroid(32,18),
     },
     buttonContainer:{
-        width:140,
-        marginTop:20
+        width:appleOrAndroid(280,140),
+        marginTop:appleOrAndroid(40,20),
+        backgroundColor:appleOrAndroid('#ff7c15', 'white')
+    },
+    button:{
+        color:'#fff'
     }
 })

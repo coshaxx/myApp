@@ -21,6 +21,7 @@ export const AppNavigator = createStackNavigator({
     },
     {
         initialRouteName: 'Home',
+        mode: 'modal'
     });
 
 const navReducer = createNavigationReducer(AppNavigator);

@@ -27,6 +27,10 @@ export default class VideoPlayer extends Component {
 
     video: Video;
 
+    static navigationOptions = {
+        header: null
+    }
+
     componentDidMount() {
         this._enableTVEventHandler();
     }
