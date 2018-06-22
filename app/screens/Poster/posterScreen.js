@@ -92,8 +92,8 @@ export default class Poster extends Component {
                 </View>
                 <View style={styles.rightView}>
                     <Text style={[styles.text, styles.title]}>{film.title}</Text>
-                    <Text style={styles.text}>Detail information:</Text>
                     <View style={styles.detailInformationContainer}>
+                        <Text style={styles.text}>Detail information:</Text>
                         <View>
                             {this.state.needLoader ? <Loader/> :
                                 <View>

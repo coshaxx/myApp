@@ -8,6 +8,7 @@ import { Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight } fr
 import { getImageUrl } from "../../modules/_imageHelper";
 import Loader from "../../components/Loader/loader"
 import colors from '../../styles/common.style'
+
 class FilmsGrid extends Component {
     constructor() {
         super();

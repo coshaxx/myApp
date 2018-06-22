@@ -10,10 +10,10 @@ export const styles = StyleSheet.create({
     },
     leftView:{
         flex:1,
-        width:30,
+        width: appleOrAndroid(60,30),
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop: 20,
+        paddingTop: appleOrAndroid(40,20),
     },
     posterImage:{
         width: appleOrAndroid(500,250),
@@ -28,14 +28,16 @@ export const styles = StyleSheet.create({
     },
     detailInformationContainer:{
         flex:1,
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        paddingTop: appleOrAndroid(40,20)
     },
     posterOverView:{
         marginBottom:appleOrAndroid(40,20),
-        marginTop:appleOrAndroid(40,20),
+        marginTop:appleOrAndroid(20,10),
     },
     text:{
-        color: colors.textColor
+        color: colors.textColor,
+        fontSize: appleOrAndroid(20, 12)
     },
     title:{
         fontSize: appleOrAndroid(32,18),
