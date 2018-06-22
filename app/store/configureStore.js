@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import rootReducer from '../reducers/rootReducer';
+import appReducer from '../reducers/rootReducer';
 import { composeWithDevTools } from 'remote-redux-devtools';
+import {createReactNavigationReduxMiddleware} from "react-navigation-redux-helpers";
 
 
 let middleware = [thunk];
@@ -15,14 +16,20 @@ if (__DEV__) {
     XMLHttpRequest = _XHR;
 
     const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-    middleware = [...middleware, reduxImmutableStateInvariant, logger];
+
+    console.log('-------------------------1111111---------------------------');
+    let middlewareNav = createReactNavigationReduxMiddleware(
+        "root",
+        state => state.nav,
+    );
+    middleware = [...middleware, middlewareNav, reduxImmutableStateInvariant, logger];
 } else {
     middleware = [...middleware];
 }
 
 export default function configureStore(initialState){
     return createStore(
-        rootReducer,
+        appReducer,
         initialState,
         composeWithDevTools(applyMiddleware(...middleware))
     )

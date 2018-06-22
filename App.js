@@ -1,38 +1,27 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View } from 'react-native';
-import ComponentText from './app/components/ComponentText/ComponentText'
-import Component4 from "./app/components/Component4/Component4";
-import Component5 from "./app/components/Component5/Component5";
-import Component6 from "./app/components/Component6/Component6";
+import { Provider, connect } from 'react-redux';
 
-import { Navigation } from 'react-native-navigation';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { registerScreens } from "./screens";
 import configureStore from './app/store/configureStore'
+import {reduxifyNavigator} from "react-navigation-redux-helpers";
+import {AppNavigator} from "./app/reducers/rootReducer";
 
 const store = configureStore();
-export default class MyApp {
-    constructor() {
+console.log('-------------------------222---------------------------')
+const App = reduxifyNavigator(AppNavigator, "root");
+const mapStateToProps = (state) => ({
+    state: state.nav,
+});
+const AppWithNavigationState = connect(mapStateToProps)(App);
 
-        registerScreens(store, Provider);
-
-        MyApp.startApp('my.Component5', 'Welcome')
+export default class MyApp extends React.Component{
+    render() {
+        return (
+            <Provider store={store}>
+                <AppWithNavigationState />
+            </Provider>
+        );
     }
 
-    static startApp(screen, title, params) {
-        Navigation.startSingleScreenApp({
-            screen: {
-                screen: screen,
-                label: title,
-            },
-            passProps: {},
-            appStyle: {
-                orientation: 'portrait',
-                keepStyleAcrossPush: true
-            }
-        });
-    }
 
 }
 
