@@ -18,10 +18,10 @@ export default class Poster extends Component {
         }
 
     }
-
-    static navigationOptions = {
-        header: null
-    }
+    //
+    // static navigationOptions = {
+    //     header: null
+    // }
 
     componentDidMount() {
         this._fetchPosterData();
