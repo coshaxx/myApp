@@ -18,6 +18,7 @@ export default class Poster extends Component {
             poster: {},
         }
 
+
     }
 
     static navigationOptions =  ({navigation}) => ({
@@ -36,6 +37,7 @@ export default class Poster extends Component {
         this._enableTVEventHandler();
     }
 
+
     componentWillUnmount() {
         console.log('UNMOUNT TVHANDLER')
         this._disableTVEventHandler();
@@ -45,7 +47,7 @@ export default class Poster extends Component {
         const $this = this;
         this._tvEventHandler = new TVEventHandler();
         this._tvEventHandler.enable(this, function(cmp, evt) {
-            console.log('EVENT TYPE:', evt.eventType)
+            console.log('EVENT TYPE Poster Screen:', evt.eventType)
             if(evt){
                 switch (evt.eventType){
                     case 'playPause':$this._onPress();break;
@@ -81,6 +83,8 @@ export default class Poster extends Component {
     }
 
     _onPress = () => {
+        this._disableTVEventHandler();
+        console.log('  this._disableTVEventHandler();');
         this.props.navigation.navigate('Video',{
                 video: this.state.poster.id,
                 headerMode: 'screen'
@@ -93,6 +97,7 @@ export default class Poster extends Component {
         const film = navigation.getParam('film', 'NO-ID');
         const {poster} = this.state;
         const imageUrl = getImageUrl(film.poster_path, imageSizes.IMAGE_SIZE_370_556);
+        console.log(' this.props.navigation:',  this.props.navigation.isFocused())
 
         return (
             <View style={styles.container}>

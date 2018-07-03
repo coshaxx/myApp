@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as filmsAction from './films.actions'
 import * as imageSizes from '../../constants/imageSizes'
 import {ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles} from "../../styles/films.style";
-import {Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight} from 'react-native';
+import {Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight, Button} from 'react-native';
 import {getImageUrl} from "../../modules/_imageHelper";
 import Loader from "../../components/Loader/loader"
 import colors from '../../styles/common.style'
@@ -13,8 +13,10 @@ class FilmsGrid extends Component {
     constructor() {
         super();
         this.state = {
-            selectedId: null
-        }
+            selectedId: null,
+        };
+
+        const renderFlatList = true;
     }
 
     static navigationOptions = {
@@ -32,6 +34,14 @@ class FilmsGrid extends Component {
         this.props.actions.fetchPopularFilms();
     }
 
+    componentWillUpdate() {
+
+        const {routes, index} = this.props.nav;
+        const currentIndex = routes[index].routeName;
+
+        this.renderFlatList = currentIndex === 'Home';
+    }
+
     _setSelectedId = (id) => {
         // updater functions are preferred for transactional updates
         this.setState(() => {
@@ -46,17 +56,13 @@ class FilmsGrid extends Component {
         });
     }
 
-    componentDidBlur(){
-        console.log('DID BLUER')
-    }
-
 
     _renderItem = ({item}) => {
         const imageUrl = getImageUrl(item.poster_path, imageSizes.IMAGE_SIZE_370_556);
         const isSelected = item.id === this.state.selectedId;
         return <TouchableHighlight key={item.id}
                                    onPress={() => this.onPress(item)}
-                                   underlayColor={colors.focusColor}
+                                   underlayColor={colors.backgroundColor}
                                    onShowUnderlay={() => this._setSelectedId(item.id)}
         >
 
@@ -96,10 +102,14 @@ class FilmsGrid extends Component {
         };
     };
 
+    _findInitialScrollIndex = () => {
+        const a = (this.props.films.findIndex((item) => item.id === this.state.selectedId)/4) >> 0
+        return a;
+    };
+
     render() {
         const {films, needLoader, error} = this.props;
-        console.log("STYLES:", styles);
-
+        console.log('This.STATE:', this.state, films);
         return (
             error.message.length ? <View>
                     <Text> Error:</Text>
@@ -110,18 +120,22 @@ class FilmsGrid extends Component {
                         <Loader horyzontal/>
                         :
                         <View>
-                            <FlatList
-                                data={films}
-                                renderItem={this._renderItem}
-                                onEndReached={this._loadMore}
-                                contentcontaierStyle={styles.container}
-                                numColumns={numColumns}
-                                keyExtractor={this._keyExtractor}
-                                getItemLayout={this._getItemLayout}
-                                ItemSeparatorComponent={({highlighted}) => (
-                                    <View style={[highlighted && {marginLeft: 40, padding: 0}]}/>
-                                )}
-                            />
+                            {this.renderFlatList ?
+                                <FlatList
+                                    data={films}
+                                    renderItem={this._renderItem}
+                                    onEndReached={this._loadMore}
+                                    contentcontaierStyle={styles.container}
+                                    numColumns={numColumns}
+                                    keyExtractor={this._keyExtractor}
+                                    getItemLayout={this._getItemLayout}
+                                    ItemSeparatorComponent={({highlighted}) => (
+                                        <View style={[highlighted && {marginLeft: 40, padding: 0}]}/>
+                                    )}
+                                    initialScrollIndex={this._findInitialScrollIndex() }
+                                />
+                                : null
+                            }
                         </View>
                     }
                 </View>
@@ -135,7 +149,8 @@ function mapStateToProps(state, ownProps) {
         films: state.films.data.results,
         needLoader: state.films.loading,
         error: state.films.error,
-        currentPage: state.films.data.page
+        currentPage: state.films.data.page,
+        nav: state.nav,
     }
 }
 

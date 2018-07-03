@@ -43,7 +43,7 @@ export default class VideoPlayer extends Component {
         const $this = this;
         this._tvEventHandler = new TVEventHandler();
         this._tvEventHandler.enable(this, function(cmp, evt) {
-            console.log('EVNT:', evt.eventType);
+            console.log('EVNT Player:', evt.eventType);
           if(evt && evt.eventType === 'playPause') {
                 $this.playPause();
             }
@@ -155,7 +155,7 @@ export default class VideoPlayer extends Component {
                 <View style={styles.controls}>
                     <View style={styles.generalControls}>
                         <View style={styles.rateControl}>
-                            {this.renderRateControl(0.25)}
+                            {this.renderRateControl(0.2)}
                             {this.renderRateControl(0.5)}
                             {this.renderRateControl(1.0)}
                             {this.renderRateControl(1.5)}
@@ -163,6 +163,7 @@ export default class VideoPlayer extends Component {
                         </View>
 
                         <View style={styles.volumeControl}>
+                            {this.renderVolumeControl(0.2)}
                             {this.renderVolumeControl(0.5)}
                             {this.renderVolumeControl(1)}
                             {this.renderVolumeControl(1.5)}
