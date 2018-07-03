@@ -43,7 +43,7 @@ export default class VideoPlayer extends Component {
         const $this = this;
         this._tvEventHandler = new TVEventHandler();
         this._tvEventHandler.enable(this, function(cmp, evt) {
-
+            console.log('EVNT:', evt.eventType);
           if(evt && evt.eventType === 'playPause') {
                 $this.playPause();
             }

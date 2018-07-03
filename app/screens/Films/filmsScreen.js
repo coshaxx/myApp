@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import * as filmsAction from './films.actions'
 import * as imageSizes from '../../constants/imageSizes'
-import { ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles } from "../../styles/films.style";
-import { Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
-import { getImageUrl } from "../../modules/_imageHelper";
+import {ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles} from "../../styles/films.style";
+import {Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight} from 'react-native';
+import {getImageUrl} from "../../modules/_imageHelper";
 import Loader from "../../components/Loader/loader"
 import colors from '../../styles/common.style'
 
@@ -41,33 +41,37 @@ class FilmsGrid extends Component {
 
 
     onPress(film) {
-        this.props.navigation.navigate('FilmPoster', {
+        this.props.navigation.push('FilmPoster', {
             film: film,
         });
+    }
+
+    componentDidBlur(){
+        console.log('DID BLUER')
     }
 
 
     _renderItem = ({item}) => {
         const imageUrl = getImageUrl(item.poster_path, imageSizes.IMAGE_SIZE_370_556);
-        console.log('This.state:', this.state)
         const isSelected = item.id === this.state.selectedId;
-        console.log('isSelected:', isSelected, this.state.selectedId, item.id);
         return <TouchableHighlight key={item.id}
-                                   // style={isSelected && [{padding:0, margin:0}]}
                                    onPress={() => this.onPress(item)}
                                    underlayColor={colors.focusColor}
-                                   onShowUnderlay={()=> this._setSelectedId(item.id)}
-                             >
+                                   onShowUnderlay={() => this._setSelectedId(item.id)}
+        >
 
             <View style={[styles.itemWrap, isSelected && styles.itemWrapActive]}>
-                <View style={[styles.imageWrap,isSelected && styles.imageWrapActive]}>
-                    <Image source={{uri: imageUrl}} style={styles.image} />
+                <View style={[styles.imageWrap, isSelected && styles.imageWrapActive]}>
+                    <Image source={{uri: imageUrl}} style={styles.image}/>
                 </View>
                 <View style={[styles.imageFooterContainer, isSelected && styles.imageFooterContainerActive]}>
-                    <Text style={[styles.footerText, styles.footerTitle, isSelected && styles.footerTextActive]}>{item.title}</Text>
+                    <Text
+                        style={[styles.footerText, styles.footerTitle, isSelected && styles.footerTextActive]}>{item.title}</Text>
                     <View style={styles.footerRatingBlock}>
-                        <Text style={[styles.footerText, styles.footerData, isSelected && styles.footerDataActive]}>{item.release_date}</Text>
-                        <Text style={[styles.footerText, isSelected && styles.footerTextActive]}>Rating:    {item.vote_average}</Text>
+                        <Text
+                            style={[styles.footerText, styles.footerData, isSelected && styles.footerDataActive]}>{item.release_date}</Text>
+                        <Text
+                            style={[styles.footerText, isSelected && styles.footerTextActive]}>Rating: {item.vote_average}</Text>
                     </View>
                 </View>
             </View>
@@ -115,8 +119,8 @@ class FilmsGrid extends Component {
                                 keyExtractor={this._keyExtractor}
                                 getItemLayout={this._getItemLayout}
                                 ItemSeparatorComponent={({highlighted}) => (
-                                    <View style={[ highlighted && {marginLeft: 40, padding:0}]} />
-                                    )}
+                                    <View style={[highlighted && {marginLeft: 40, padding: 0}]}/>
+                                )}
                             />
                         </View>
                     }

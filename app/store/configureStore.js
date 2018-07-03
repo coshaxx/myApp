@@ -17,7 +17,6 @@ if (__DEV__) {
 
     const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
-    console.log('-------------------------1111111---------------------------');
     let middlewareNav = createReactNavigationReduxMiddleware(
         "root",
         state => state.nav,
