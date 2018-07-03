@@ -25,4 +25,8 @@ target 'MyApp' do
 
   # Add any other dependencies here, including any 3rd party native libraries that you depend on for
   # React Native.
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
+
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
 end

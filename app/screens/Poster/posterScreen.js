@@ -5,6 +5,7 @@ import { getImageUrl } from "../../modules/_imageHelper";
 import { styles } from "../../styles/poster.style";
 import Loader from "../../components/Loader/loader"
 import clientApi from '../../modules/_clientApi'
+import colors from "../../styles/common.style";
 
 const  TVEventHandler = require('TVEventHandler');
 
@@ -19,9 +20,16 @@ export default class Poster extends Component {
 
     }
 
-    static navigationOptions = {
-        header: null
-    }
+    static navigationOptions =  ({navigation}) => ({
+        title: `${navigation.state.params.film.title}`,
+        headerStyle: {
+            backgroundColor: colors.grey,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+    });
 
     componentDidMount() {
         this._fetchPosterData();
@@ -29,6 +37,7 @@ export default class Poster extends Component {
     }
 
     componentWillUnmount() {
+        console.log('UNMOUNT TVHANDLER')
         this._disableTVEventHandler();
     }
 
@@ -110,6 +119,10 @@ export default class Poster extends Component {
                                             title={"Play Video"}
                                             hasTVPreferredFocus ={true}
                                             color={'#fff'}
+                                        />
+                                        <Button
+                                            title="Go back"
+                                            onPress={() => this.props.navigation.goBack()}
                                         />
                                     </View>
                                 </View>
