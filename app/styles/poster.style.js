@@ -45,7 +45,8 @@ export const styles = StyleSheet.create({
     buttonContainer:{
         width:appleOrAndroid(280,140),
         marginTop:appleOrAndroid(40,20),
-        backgroundColor:appleOrAndroid('#ff7c15', 'white')
+        backgroundColor:colors.focusColor,
+        borderRadius:5
     },
     button:{
         color:'#fff'

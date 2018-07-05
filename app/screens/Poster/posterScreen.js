@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight} from 'react-native';
 import * as imageSizes from "../../constants/imageSizes";
 import { getImageUrl } from "../../modules/_imageHelper";
 import { styles } from "../../styles/poster.style";
 import Loader from "../../components/Loader/loader"
 import clientApi from '../../modules/_clientApi'
 import colors from "../../styles/common.style";
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const  TVEventHandler = require('TVEventHandler');
 
@@ -21,8 +22,12 @@ export default class Poster extends Component {
 
     }
 
-    static navigationOptions =  ({navigation}) => ({
+    static navigationOptions = ({navigation}) => ({
         title: `${navigation.state.params.film.title}`,
+        headerLeft:
+                    <TouchableOpacity onPress={() => {navigation.goBack()}}>
+                        <Icon name={'arrow-left'} size={20} style={{paddingLeft: 20}} color='#fff'/>
+                    </TouchableOpacity>,
         headerStyle: {
             backgroundColor: colors.grey,
         },
@@ -118,18 +123,20 @@ export default class Poster extends Component {
                                     <Text style={styles.text}>Release Data: {poster.release_date}</Text>
                                     <Text style={styles.text}>Vote Average: {poster.vote_average}</Text>
 
-                                    <View style = {styles.buttonContainer}>
-                                        <Button
-                                            onPress={this._onPress}
-                                            title={"Play Video"}
-                                            hasTVPreferredFocus ={true}
-                                            color={'#fff'}
-                                        />
-                                        <Button
-                                            title="Go back"
-                                            onPress={() => this.props.navigation.goBack()}
-                                        />
-                                    </View>
+                                    <TouchableOpacity style = {styles.buttonContainer}>
+                                            <Icon.Button
+                                                name='play'
+                                                size={20}
+                                                color={'#fff'}
+                                                onPress={}
+                                                backgroundColor={colors.focusColor}
+                                                borderRadius={5}
+                                                hasTVPreferredFocus ={true}>
+                                                <Text style={{color:'#fff',marginLeft:5}}>Play Video</Text>
+                                            </Icon.Button>
+
+
+                                    </TouchableOpacity>
                                 </View>
                                 }
                         </View>
