@@ -94,7 +94,7 @@ class FilmsGrid extends Component {
     _keyExtractor = (item, index) => item.id;
 
     _getItemLayout = (data, index) => {
-        const productHeight = ITEM_HEIGHT + PRODUCT_ITEM_MARGIN;
+        const productHeight = ITEM_HEIGHT + PRODUCT_ITEM_MARGIN * 2;
         return {
             length: productHeight,
             offset: productHeight * index,

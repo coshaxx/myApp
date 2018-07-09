@@ -4,5 +4,6 @@ export default colors = {
     backgroundColor: '#232931',
     placeholder: '#eee',
     grey:'#3b434b',
-    focusColor:'#ff7c15'
+    focusColor:'#ff7c15',
+    unFocusColor: '#ffeb3b'
 };

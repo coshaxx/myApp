@@ -57,7 +57,10 @@ export default class VideoPlayer extends Component {
                         $this.playPause();
                         break;
                     case 'rewind':
-                        $this.rewind();
+                        $this.rewindFastForfard(false);
+                        break;
+                    case 'fastForward':
+                        $this.rewindFastForfard();
                         break;
                 }
             }
@@ -72,7 +75,21 @@ export default class VideoPlayer extends Component {
         }
     }
 
-    rewind = () => {
+    rewindFastForfard = (direction = true) => {
+        const {currentTime, duration} = this.state;
+        const delta = 10;
+        let position = direction? currentTime + delta : currentTime - delta;
+        if (position < 0) {
+            position = 0
+        }
+        if ( position > duration){
+            position = duration
+        }
+
+        this.moveVideoTo(position);
+    };
+
+    fastForward = () => {
         const {currentTime} = this.state;
         let position = currentTime - 10;
         if (position < 0) {
@@ -80,7 +97,7 @@ export default class VideoPlayer extends Component {
         }
 
         this.moveVideoTo(position);
-    };
+    }
 
     moveVideoTo = (position) => {
         this.video.seek(position)
@@ -96,10 +113,6 @@ export default class VideoPlayer extends Component {
 
     onLoad = (data) => {
         this.setState({duration: data.duration});
-        console.log('slider:', this.slider);
-        console.log('video:', this.video)
-        console.log('Slider:', Slider)
-        console.log('Slider:func', Slider._setCurrentValue)
     };
 
     onProgress = (data) => {
