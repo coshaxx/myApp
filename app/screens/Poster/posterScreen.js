@@ -7,10 +7,11 @@ import Loader from "../../components/Loader/loader"
 import clientApi from '../../modules/_clientApi'
 import colors from "../../styles/common.style";
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {connect} from "react-redux";
 
 const TVEventHandler = require('TVEventHandler');
 
-export default class Poster extends Component {
+class Poster extends Component {
 
     constructor() {
         super();
@@ -20,6 +21,7 @@ export default class Poster extends Component {
             pressStatus: false,
         }
 
+        let isPosterScreen = true;
 
     }
 
@@ -46,12 +48,10 @@ export default class Poster extends Component {
     }
 
     _onHideUnderlay() {
-        console.log("hide pressStatus");
         this.setState({pressStatus: false});
     }
 
     _onShowUnderlay() {
-        console.log("set pressStatus");
         this.setState({pressStatus: true});
     }
 
@@ -60,12 +60,28 @@ export default class Poster extends Component {
         this._disableTVEventHandler();
     }
 
+    componentDidUpdate(){
+        const {routes, index} = this.props.nav;
+        const currentIndex = routes[index].routeName;
+
+        const isPosterScreen = currentIndex === 'FilmPoster';
+        console.log('isPosterScreen:', isPosterScreen);
+        if(isPosterScreen){
+            this.isPosterScreen = true;
+            this._enableTVEventHandler();
+        }else{
+            this.isPosterScreen = false;
+            this._disableTVEventHandler();
+        }
+
+    }
+
+
     _enableTVEventHandler() {
         const $this = this;
         this._tvEventHandler = new TVEventHandler();
         this._tvEventHandler.enable(this, function (cmp, evt) {
-            console.log('EVENT TYPE Poster Screen:', evt.eventType)
-            if (evt) {
+            if (evt && $this.isPosterScreen) {
                 switch (evt.eventType) {
                     case 'playPause':
                         $this._onPress();
@@ -105,7 +121,6 @@ export default class Poster extends Component {
 
     _onPress = () => {
         this._disableTVEventHandler();
-        console.log('  this._disableTVEventHandler();');
         this.props.navigation.navigate('Video', {
             video: this.state.poster.id,
             headerMode: 'screen'
@@ -166,6 +181,13 @@ export default class Poster extends Component {
         )
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        nav: state.nav,
+    }
+}
+export default connect(mapStateToProps)(Poster)
 
 
 

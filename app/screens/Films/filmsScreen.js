@@ -51,7 +51,7 @@ class FilmsGrid extends Component {
 
 
     onPress(film) {
-        this.props.navigation.push('FilmPoster', {
+        this.props.navigation.navigate('FilmPoster', {
             film: film,
         });
     }
@@ -109,7 +109,6 @@ class FilmsGrid extends Component {
 
     render() {
         const {films, needLoader, error} = this.props;
-        console.log('This.STATE:', this.state, films);
         return (
             error.message.length ? <View>
                     <Text> Error:</Text>
