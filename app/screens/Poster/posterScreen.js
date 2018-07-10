@@ -56,7 +56,6 @@ class Poster extends Component {
     }
 
     componentWillUnmount() {
-        console.log('UNMOUNT TVHANDLER')
         this._disableTVEventHandler();
     }
 
@@ -65,7 +64,7 @@ class Poster extends Component {
         const currentIndex = routes[index].routeName;
 
         const isPosterScreen = currentIndex === 'FilmPoster';
-        console.log('isPosterScreen:', isPosterScreen);
+
         if(isPosterScreen){
             this.isPosterScreen = true;
             this._enableTVEventHandler();
@@ -133,7 +132,6 @@ class Poster extends Component {
         const film = navigation.getParam('film', 'NO-ID');
         const {poster} = this.state;
         const imageUrl = getImageUrl(film.poster_path, imageSizes.IMAGE_SIZE_370_556);
-        console.log("this.state.pressStatus:", this.state.pressStatus);
         return (
             <View style={styles.container}>
                 <View style={styles.leftView}>

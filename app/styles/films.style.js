@@ -11,8 +11,8 @@ export const PRODUCT_ITEM_MARGIN = ITEM_OFFSET * 2;
 
 export const ITEM_HEIGHT = (Dimensions.get('window').height / 1.5) - ITEM_OFFSET * 3;
 export const ITEM_WIDTH = ((Dimensions.get('window').width / numColumns) - ITEM_OFFSET * numColumns);
-const ITEM_FOOTER_HEIGHT = 40;
-export const IMAGE_HEIGHT = appleOrAndroid((ITEM_HEIGHT - ITEM_FOOTER_HEIGHT) * 2, ITEM_HEIGHT - ITEM_FOOTER_HEIGHT);
+const ITEM_FOOTER_HEIGHT = appleOrAndroid(80,40);
+export const IMAGE_HEIGHT = ITEM_HEIGHT - ITEM_FOOTER_HEIGHT;
 
 
 export const styles = StyleSheet.create({
