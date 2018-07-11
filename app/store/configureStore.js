@@ -23,7 +23,11 @@ if (__DEV__) {
     );
     middleware = [...middleware, middlewareNav, reduxImmutableStateInvariant, logger];
 } else {
-    middleware = [...middleware];
+    let middlewareNav = createReactNavigationReduxMiddleware(
+        "root",
+        state => state.nav,
+    );
+    middleware = [...middleware, middlewareNav];
 }
 
 export default function configureStore(initialState){

@@ -272,7 +272,7 @@ export default class VideoPlayer extends Component {
                         style={styles.fullScreen}
                         onPress={this.playPause}
                     >
-                        player
+                        {player}
                     </TouchableOpacity>
 
                 }
