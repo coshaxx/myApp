@@ -78,9 +78,9 @@ export default class VideoPlayer extends Component {
                         $this.moveDownVolume();
                         break;
 
-                    case 'select':
-                        $this.playPause();
-                        break;
+                    // case 'select':
+                    //     $this.playPause();
+                    //     break;
                 }
             }
 
@@ -305,25 +305,25 @@ export default class VideoPlayer extends Component {
                                     this.moveVideoTo(value)
                                 )}/>
                         </View>
-                        <View style={[styles.resizeModeControl, styles.littleModeControl]}>
-                            <TouchableOpacity
-                                onPress={() => this.muteUnmute()}>
-                                <Icon name={this._getVolumeIconName()} size={20} color={'#fff'}/>
-                            </TouchableOpacity>
-                        </View>
+                        {/*<View style={[styles.resizeModeControl, styles.littleModeControl]}>*/}
+                            {/*<TouchableOpacity*/}
+                                {/*onPress={() => this.muteUnmute()}>*/}
+                                {/*<Icon name={this._getVolumeIconName()} size={20} color={'#fff'}/>*/}
+                            {/*</TouchableOpacity>*/}
+                        {/*</View>*/}
 
 
-                        <View style={styles.volumeControl}>
-                            {this.renderVolumeControl(0.2)}
-                            {this.renderVolumeControl(0.5)}
-                            {this.renderVolumeControl(1)}
-                        </View>
+                        {/*<View style={styles.volumeControl}>*/}
+                            {/*{this.renderVolumeControl(0.2)}*/}
+                            {/*{this.renderVolumeControl(0.5)}*/}
+                            {/*{this.renderVolumeControl(1)}*/}
+                        {/*</View>*/}
 
                         <View style={[styles.resizeModeControl]}>
 
                             <Icon.Button name='arrow-left' size={20} color={'#fff'}
                                          backgroundColor={'#2C2C2C'}
-                                         onPress={() => this._goBack}>
+                                         onPress={() => this._goBack()}>
                                 Go Back</Icon.Button>
 
                         </View>

@@ -8,6 +8,11 @@ import {createReactNavigationReduxMiddleware} from "react-navigation-redux-helpe
 
 let middleware = [thunk];
 
+let middlewareNav = createReactNavigationReduxMiddleware(
+    "root",
+    state => state.nav,
+);
+
 if (__DEV__) {
     const _XHR = GLOBAL.originalXMLHttpRequest ?
         GLOBAL.originalXMLHttpRequest :
@@ -17,16 +22,9 @@ if (__DEV__) {
 
     const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 
-    let middlewareNav = createReactNavigationReduxMiddleware(
-        "root",
-        state => state.nav,
-    );
     middleware = [...middleware, middlewareNav, reduxImmutableStateInvariant, logger];
 } else {
-    let middlewareNav = createReactNavigationReduxMiddleware(
-        "root",
-        state => state.nav,
-    );
+
     middleware = [...middleware, middlewareNav];
 }
 
