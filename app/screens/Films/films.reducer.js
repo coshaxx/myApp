@@ -15,10 +15,24 @@ export default function (state = initialState.films, action) {
             return {
                 ...state,
                 loading: false,
-                data: {
+                popular: {
                     ...action.payload,
                     results: [
-                        ...state.data.results,
+                        ...state.popular.results,
+                        ...action.payload.results
+                    ]
+                }
+            };
+        }
+
+        case types.FETCH_TOP_FILMS_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                top: {
+                    ...action.payload,
+                    results: [
+                        ...state.top.results,
                         ...action.payload.results
                     ]
                 }

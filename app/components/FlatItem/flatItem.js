@@ -75,11 +75,6 @@ export default class FlatItem extends Component {
         this._unsetSelectedId()
     }
 
-    // buttonScale = this.state._scaleValue.interpolate({
-    //     inputRange: [1, 1.025, 1.05, 1.075, 1.1],
-    //     outputRange: [1, 1.25, 1.05, 1.075, 1.1]
-    // });
-
 
     render() {
         const {isActive} = this.state;
@@ -105,7 +100,7 @@ export default class FlatItem extends Component {
                     <Image source={{uri: imageUrl}} style={styles.image}/>
                 </View>
                 <View style={[styles.imageFooterContainer]}>
-                    <Text
+                     <Text
                         style={[styles.footerText, styles.footerTitle]}>{item.title}</Text>
                     <View style={styles.footerRatingBlock}>
                         <Text
@@ -113,6 +108,7 @@ export default class FlatItem extends Component {
                         <Text
                             style={[styles.footerText]}>Rating: {item.vote_average}</Text>
                     </View>
+
                 </View>
             </Animated.View>
         </TouchableWithoutFeedback>

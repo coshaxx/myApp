@@ -1,10 +1,14 @@
 export default {
     films: {
       loading: true,
-      data: {
+      popular: {
           page: 1,
           results:[]
       },
+        top:{
+          page:1,
+            results:[]
+        },
       error: {
           message: ''
       }
