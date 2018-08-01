@@ -3,18 +3,21 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as filmsAction from './films.actions'
 import * as imageSizes from '../../constants/imageSizes'
-import {ITEM_HEIGHT, numColumns, PRODUCT_ITEM_MARGIN, styles} from "../../styles/films.style";
-import {Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight} from 'react-native';
+import { ITEM_HEIGHT, ITEM_WIDTH, numColumns, PRODUCT_ITEM_MARGIN, styles } from "../../styles/films.style";
+import {Text, View, Image, ActivityIndicator, FlatList, TouchableHighlight, Button} from 'react-native';
 import {getImageUrl} from "../../modules/_imageHelper";
 import Loader from "../../components/Loader/loader"
 import colors from '../../styles/common.style'
+import FlatItem from "../../components/FlatItem/flatItem";
+
+
+
 
 class FilmsGrid extends Component {
     constructor() {
         super();
-        this.state = {
-            selectedId: null
-        }
+
+        this.onPress = this.onPress.bind(this);
     }
 
     static navigationOptions = {
@@ -32,74 +35,66 @@ class FilmsGrid extends Component {
         this.props.actions.fetchPopularFilms();
     }
 
-    _setSelectedId = (id) => {
-        // updater functions are preferred for transactional updates
-        this.setState(() => {
-            return {selectedId: id};
-        });
-    };
+    componentWillUpdate() {
+
+        const {routes, index} = this.props.nav;
+        const currentIndex = routes[index].routeName;
+
+        this.renderFlatList = currentIndex === 'Home';
+    }
 
 
-    onPress(film) {
-        this.props.navigation.push('FilmPoster', {
+    onPress = (film) => {
+        this.props.navigation.navigate('FilmPoster', {
             film: film,
         });
     }
 
-    componentDidBlur(){
-        console.log('DID BLUER')
-    }
 
-
-    _renderItem = ({item}) => {
+    _renderItem = ({item, separators}) => {
         const imageUrl = getImageUrl(item.poster_path, imageSizes.IMAGE_SIZE_370_556);
-        const isSelected = item.id === this.state.selectedId;
-        return <TouchableHighlight key={item.id}
-                                   onPress={() => this.onPress(item)}
-                                   underlayColor={colors.focusColor}
-                                   onShowUnderlay={() => this._setSelectedId(item.id)}
-        >
-
-            <View style={[styles.itemWrap, isSelected && styles.itemWrapActive]}>
-                <View style={[styles.imageWrap, isSelected && styles.imageWrapActive]}>
-                    <Image source={{uri: imageUrl}} style={styles.image}/>
-                </View>
-                <View style={[styles.imageFooterContainer, isSelected && styles.imageFooterContainerActive]}>
-                    <Text
-                        style={[styles.footerText, styles.footerTitle, isSelected && styles.footerTextActive]}>{item.title}</Text>
-                    <View style={styles.footerRatingBlock}>
-                        <Text
-                            style={[styles.footerText, styles.footerData, isSelected && styles.footerDataActive]}>{item.release_date}</Text>
-                        <Text
-                            style={[styles.footerText, isSelected && styles.footerTextActive]}>Rating: {item.vote_average}</Text>
-                    </View>
-                </View>
-            </View>
-        </TouchableHighlight>
+        return <FlatItem
+            item={item}
+            imageUrl={imageUrl}
+            onPress = {this.onPress}
+            separators={separators}
+            key={item.id}
+        />
     }
 
     _loadMore = () => {
         if (!this.props.needLoader) {
             this.props.actions.startFetchFilms();
-            this.props.actions.fetchPopularFilms(this.props.currentPage + 1)
+            this.props.actions.fetchPopularFilms(this.props.currentPagePopular + 1)
         }
     }
 
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => item.id.toString();
 
     _getItemLayout = (data, index) => {
-        const productHeight = ITEM_HEIGHT + PRODUCT_ITEM_MARGIN;
+        const productHeight = ITEM_HEIGHT;
+        const ROW_HEIGHT = ITEM_WIDTH + PRODUCT_ITEM_MARGIN*2
+        // console.log("product Height:", productHeight, 'offset', productHeight * index);
+        // console.log("offset:", productHeight * index);
         return {
-            length: productHeight,
-            offset: productHeight * index,
+            length: ROW_HEIGHT,
+            offset: ROW_HEIGHT * index,
             index,
         };
     };
 
+
+    handleScroll =  function(event: Object) {
+    console.log('scrollPosition:',event.nativeEvent.contentOffset.y );
+}
+
+    renderSeparator = function () {
+        return <View style={{width:2}}>{}</View>
+    }
+
     render() {
         const {films, needLoader, error} = this.props;
-        console.log("STYLES:", styles);
-
+        console.log("render FilmsScreen");
         return (
             error.message.length ? <View>
                     <Text> Error:</Text>
@@ -109,20 +104,41 @@ class FilmsGrid extends Component {
                     {needLoader && films.length === 0 ?
                         <Loader horyzontal/>
                         :
-                        <View>
-                            <FlatList
+                        <View style={styles.flatContainer}>
+                            {this.renderFlatList ?
+                                < FlatList
+                                horizontal
                                 data={films}
                                 renderItem={this._renderItem}
                                 onEndReached={this._loadMore}
                                 contentcontaierStyle={styles.container}
-                                numColumns={numColumns}
                                 keyExtractor={this._keyExtractor}
-                                getItemLayout={this._getItemLayout}
-                                ItemSeparatorComponent={({highlighted}) => (
-                                    <View style={[highlighted && {marginLeft: 40, padding: 0}]}/>
-                                )}
-                            />
-                        </View>
+                                // getItemLayout={this._getItemLayout}
+                                onScroll={this.handleScroll}
+                                ItemSeparatorComponent={this.renderSeparator}
+                                />
+
+
+                                : null
+                            }
+                            {this.renderFlatList ?
+                                < FlatList
+                                    horizontal
+                                    data={films}
+                                    renderItem={this._renderItem}
+                                    onEndReached={this._loadMore}
+                                    contentcontaierStyle={styles.container}
+                                    keyExtractor={this._keyExtractor}
+                                    // getItemLayout={this._getItemLayout}
+                                    onScroll={this.handleScroll}
+                                    ItemSeparatorComponent={this.renderSeparator}
+                                />
+
+
+                                : null
+                            }
+
+                                </View>
                     }
                 </View>
 
@@ -132,10 +148,11 @@ class FilmsGrid extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        films: state.films.data.results,
+        films: state.films.popular.results,
         needLoader: state.films.loading,
         error: state.films.error,
-        currentPage: state.films.data.page
+        currentPagePopular: state.films.popular.page,
+        nav: state.nav,
     }
 }
 

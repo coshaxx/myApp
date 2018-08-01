@@ -6,7 +6,6 @@ import {reduxifyNavigator} from "react-navigation-redux-helpers";
 import {AppNavigator} from "./app/reducers/rootReducer";
 
 const store = configureStore();
-console.log('-------------------------222---------------------------')
 const App = reduxifyNavigator(AppNavigator, "root");
 const mapStateToProps = (state) => ({
     state: state.nav,

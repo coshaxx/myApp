@@ -15,10 +15,10 @@ export default function (state = initialState.films, action) {
             return {
                 ...state,
                 loading: false,
-                data: {
+                popular: {
                     ...action.payload,
                     results: [
-                        ...state.data.results,
+                        ...state.popular.results,
                         ...action.payload.results
                     ]
                 }
