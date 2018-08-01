@@ -65,7 +65,7 @@ class FilmsGrid extends Component {
     _loadMore = () => {
         if (!this.props.needLoader) {
             this.props.actions.startFetchFilms();
-            this.props.actions.fetchPopularFilms(this.props.currentPage + 1)
+            this.props.actions.fetchPopularFilms(this.props.currentPagePopular + 1)
         }
     }
 
@@ -118,8 +118,26 @@ class FilmsGrid extends Component {
                                 ItemSeparatorComponent={this.renderSeparator}
                                 />
 
+
                                 : null
                             }
+                            {this.renderFlatList ?
+                                < FlatList
+                                    horizontal
+                                    data={films}
+                                    renderItem={this._renderItem}
+                                    onEndReached={this._loadMore}
+                                    contentcontaierStyle={styles.container}
+                                    keyExtractor={this._keyExtractor}
+                                    // getItemLayout={this._getItemLayout}
+                                    onScroll={this.handleScroll}
+                                    ItemSeparatorComponent={this.renderSeparator}
+                                />
+
+
+                                : null
+                            }
+
                                 </View>
                     }
                 </View>
@@ -130,10 +148,10 @@ class FilmsGrid extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        films: state.films.data.results,
+        films: state.films.popular.results,
         needLoader: state.films.loading,
         error: state.films.error,
-        currentPage: state.films.data.page,
+        currentPagePopular: state.films.popular.page,
         nav: state.nav,
     }
 }

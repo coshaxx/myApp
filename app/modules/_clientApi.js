@@ -5,7 +5,8 @@ const API_KEY = '2f7b53d6c9c21b285a74a0aecf8bc403'
 
 export const endpoints = {
     popularMovies: '/movie/popular',
-    movie: '/movie'
+    movie: '/movie',
+    topMovies: '/movie/top_rated'
 };
 export default function clientApi() {
     return {
@@ -21,6 +22,14 @@ export default function clientApi() {
             return axios.get(API_URL + endpoints.movie +'/' + id, {
                 params: {
                     'api_key': API_KEY,
+                }
+            })
+        },
+        getTopMovies: function (page) {
+            return axios.get(API_URL + endpoints.topMovies, {
+                params: {
+                    'api_key': API_KEY,
+                    'page': page
                 }
             })
         }

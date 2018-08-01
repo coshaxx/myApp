@@ -9,7 +9,7 @@ export const numColumns = 4;
 export const ITEM_OFFSET = 5;
 export const PRODUCT_ITEM_MARGIN = ITEM_OFFSET * 2;
 
-export const ITEM_HEIGHT = (Dimensions.get('window').height / 1.4) ;
+export const ITEM_HEIGHT = (Dimensions.get('window').height / 2.4) ;
 export const ITEM_WIDTH = ((Dimensions.get('window').width / numColumns) - PRODUCT_ITEM_MARGIN * numColumns/2);
 const ITEM_FOOTER_HEIGHT = appleOrAndroid(120,70);
 export const IMAGE_HEIGHT = ITEM_HEIGHT - ITEM_FOOTER_HEIGHT;

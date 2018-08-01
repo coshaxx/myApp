@@ -7,6 +7,7 @@ export function fetchFilmsSuccess(response) {
         payload: response
     }
 }
+
 export function fetchFilmsError(error) {
     return {
         type: types.FETCH_FILMS_FAIL,
@@ -36,4 +37,5 @@ export function fetchPopularFilms(page = 1) {
 
     }
 }
+
 
