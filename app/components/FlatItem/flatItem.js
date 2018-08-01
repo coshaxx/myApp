@@ -87,7 +87,7 @@ export default class FlatItem extends Component {
 
 
 
-        return <TouchableWithoutFeedback
+        return <TouchableHighlight
             onPress={this.handleOnPress}
             underlayColor={colors.backgroundColor}
             onPressIn={this.handleOnShowUnderlay}
@@ -115,7 +115,7 @@ export default class FlatItem extends Component {
                     </View>
                 </View>
             </Animated.View>
-        </TouchableWithoutFeedback>
+        </TouchableHighlight>
     }
 
 }
