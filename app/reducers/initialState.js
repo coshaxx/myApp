@@ -5,10 +5,6 @@ export default {
           page: 1,
           results:[]
       },
-        top:{
-          page:1,
-            results:[]
-        },
       error: {
           message: ''
       }

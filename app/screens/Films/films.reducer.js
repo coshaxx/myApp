@@ -25,20 +25,6 @@ export default function (state = initialState.films, action) {
             };
         }
 
-        case types.FETCH_TOP_FILMS_SUCCESS: {
-            return {
-                ...state,
-                loading: false,
-                top: {
-                    ...action.payload,
-                    results: [
-                        ...state.top.results,
-                        ...action.payload.results
-                    ]
-                }
-            };
-        }
-
         case types.FETCH_FILMS_FAIL: {
             return {
                 ...state,

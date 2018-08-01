@@ -8,12 +8,6 @@ export function fetchFilmsSuccess(response) {
     }
 }
 
-export function fetchTopFilmsSuccess(response) {
-    return{
-        type: types.FETCH_TOP_FILMS_SUCCESS,
-        payload: response
-    }
-}
 export function fetchFilmsError(error) {
     return {
         type: types.FETCH_FILMS_FAIL,
@@ -44,21 +38,4 @@ export function fetchPopularFilms(page = 1) {
     }
 }
 
-export function fetchTopFilms(page = 1) {
-    console.log("PAGE(topFilms):", page);
-    const api = clientApi();
-    return function (dispatch) {
-        return api.getTopMovies(page)
-            .then(response => {
-                console.log("RESPONSE SUCCESS");
-                dispatch(fetchTopFilmsSuccess(response.data))
-            })
-            .catch(error => {
-                console.log(error);
-                dispatch(fetchFilmsError(error.message));
-
-            });
-
-    }
-}
 
